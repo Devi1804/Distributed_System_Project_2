@@ -13,25 +13,22 @@ public class Main {
         System.out.println("This is DS project2:");
         System.out.println("starting processes 0 to 3:");
         run();
-
-
     }
 
     private static void run() throws IOException {
-//        Process0 p0 = new Process0();
-//        p0.run();
-//        System.out.println("process 0 running on port:");
-//
-//        Process1 p1 = new Process1();
-//        p1.run();
-//        System.out.println("process 1 running on port:");
-//
-//        Process2 p2 = new Process2();
-//        p2.run();
-//        System.out.println("process 2 running on port:");
 
+        Process0 p0 = new Process0();
+        System.out.println("Process 0 sending...");
+        p0.send();
         Process3 p3 = new Process3();
-        p3.run();
-        System.out.println("process 3 running on port:");
+        System.out.println("Process 3 sending...");
+        p3.send();
+        Process2 p2 = new Process2();
+        System.out.println("Process 2 sending...");
+        p2.send();
+        Process1 p1 = new Process1();
+        System.out.println("Process 1 sending...");
+        p1.send();
+
     }
 }

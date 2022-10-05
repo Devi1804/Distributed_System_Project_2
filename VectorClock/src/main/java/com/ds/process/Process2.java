@@ -3,23 +3,29 @@ package com.ds.process;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Process2 {
 
-    public static void main(String[] args){
-        //client msg sending
-    }
-    public void run() throws IOException {
+    public static void main(String[] args) throws IOException {
+        //Start a server to listen:::
         listen();
     }
 
-    public void send(){
+    public void send() throws IOException {
         //TODO: automate the process of sending messages to server.
+        //client sending messages:
+        Socket sock = new Socket("localhost",2023);
+        BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        PrintWriter pw = new PrintWriter(sock.getOutputStream(),true);
+
+        pw.println("Hie from process 2 to process 3!");
+        pw.println("Process 2 says time is: "+System.currentTimeMillis());
     }
 
-    public void listen() throws IOException {
+    public static void listen() throws IOException {
         ServerSocket servSock = new ServerSocket(2022);
         System.out.println("Process 2 starting to listen on port 2022.");
         Socket sock = null;

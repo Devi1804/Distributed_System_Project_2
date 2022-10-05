@@ -1,32 +1,39 @@
-package com.ds;
+package com.ds.message;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 
-public class MessageHandler implements Runnable {
+public class MessageHandler extends Thread {
     private final Socket sock;
 
-    public MessageHandler(Socket sock){
+    PrintWriter pw;
+    BufferedReader br;
+
+    public MessageHandler(Socket sock) throws IOException {
         this.sock = sock;
+        br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+        pw = new PrintWriter(sock.getOutputStream(),true);
     }
 
+
     public void run(){
-        PrintWriter pw = null;
-        BufferedReader br =  null;
+
 
         try{
-            pw = new PrintWriter(sock.getOutputStream(),true);
-            br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-            String msg;
-
-            while ((msg = br.readLine())!= null){
-                System.out.println("message received from client0 is: "+msg);
+            while(true){
+                String msg = br.readLine();
+                System.out.println("message received:: "+msg);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.out.println("Error encoutered!");
+            e.printStackTrace();
+        } finally {
+            pw.close();
+            try {
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
