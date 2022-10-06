@@ -7,10 +7,11 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Process3 {
+import static com.ds.vector.Vector.*;
 
+public class Process3 {
     public static void main(String[] args) throws IOException {
-        //Start a server to listen:::
+        //Start listening:::
         listen();
     }
 
@@ -21,21 +22,23 @@ public class Process3 {
         BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         PrintWriter pw = new PrintWriter(sock.getOutputStream(),true);
 
-        pw.println("Hie from process 3 to process 0!");
-        pw.println("Process 3 says time is: "+System.currentTimeMillis());
+        System.out.println("[CLIENT 3] vector time before sending the message<"+a+","+b+","+c+","+d+">");
+        d+=1;
+        pw.println("Vector time<"+a+","+b+","+c+","+d+">");
+        System.out.println("[CLIENT 3] vector time after sending the message<"+a+","+b+","+c+","+d+">");
     }
 
     public static void listen() throws IOException {
         ServerSocket servSock = new ServerSocket(2023);
-        System.out.println("Process 3 starting to listen on port 2023.");
+        System.out.println("[SERVER 3] Process 3 starting to listen on port 2023.");
         Socket sock = null;
         sock = servSock.accept();
-        System.out.println("Connection established!");
+        System.out.println("[SERVER 3] Connection established!");
 
         InputStreamReader ip = new InputStreamReader(sock.getInputStream());
         BufferedReader br = new BufferedReader(ip);
 
         String msg = br.readLine();
-        System.out.println("Client says: "+msg);
+        System.out.println("[SERVER 3] vector time received from client: "+msg);
     }
 }
