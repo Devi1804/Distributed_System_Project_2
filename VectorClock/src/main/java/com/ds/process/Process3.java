@@ -7,38 +7,58 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import static com.ds.vector.Vector.*;
-
 public class Process3 {
+
+    public static int vector0;
+    public static int vector1;
+    public static int vector2;
+    public static int vector3;
+
     public static void main(String[] args) throws IOException {
-        //Start listening:::
+        vector0 = 0;
+        vector1 = 0;
+        vector2 = 0;
+        vector3 = 0;
+        send();
         listen();
     }
 
-    public void send() throws IOException {
-        //TODO: automate the process of sending messages to server.
-        //client sending messages:
-        Socket sock = new Socket("localhost",2020);
-        BufferedReader br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        PrintWriter pw = new PrintWriter(sock.getOutputStream(),true);
+    // client sending messages:
+    public static void send() throws IOException {
 
-        System.out.println("[CLIENT 3] vector time before sending the message<"+a+","+b+","+c+","+d+">");
-        d+=1;
-        pw.println("Vector time<"+a+","+b+","+c+","+d+">");
-        System.out.println("[CLIENT 3] vector time after sending the message<"+a+","+b+","+c+","+d+">");
+        try (Socket sock = new Socket("localhost", 2020)) {
+            PrintWriter pw = new PrintWriter(sock.getOutputStream(), true);
+
+            System.out.println(
+                    "[CLIENT 3] vector time before sending the message to server 0 <" + vector0 + "," + vector1 + "," + vector2 + ","
+                            + vector3 + ">");
+            vector3 += 1;
+            pw.println(vector0 + "," + vector1 + "," + vector2 + "," + vector3);
+            System.out.println("[CLIENT 3] vector time after sending the message to server 0 <" + vector0 + "," + vector1 + ","
+                    + vector2 + "," + vector3 + ">");
+        }
     }
 
     public static void listen() throws IOException {
-        ServerSocket servSock = new ServerSocket(2023);
-        System.out.println("[SERVER 3] Process 3 starting to listen on port 2023.");
-        Socket sock = null;
-        sock = servSock.accept();
-        System.out.println("[SERVER 3] Connection established!");
+        try (ServerSocket servSock = new ServerSocket(2023)) {
+            System.out.println("[SERVER 3] Process 3 starting to listen on port 2023.");
+            Socket sock = null;
+            sock = servSock.accept();
+            System.out.println("[SERVER 3] Connection established!");
 
-        InputStreamReader ip = new InputStreamReader(sock.getInputStream());
-        BufferedReader br = new BufferedReader(ip);
+            System.out.println("[SERVER 3] vector time before receiving the message<" + vector0 + "," + vector1 + ","
+                    + vector2 + "," + vector3 + ">");
+            InputStreamReader ip = new InputStreamReader(sock.getInputStream());
+            BufferedReader br = new BufferedReader(ip);
 
-        String msg = br.readLine();
-        System.out.println("[SERVER 3] vector time received from client: "+msg);
+            String msg = br.readLine();
+            String[] arr = msg.split(",");
+            vector0 = Integer.parseInt(arr[0]);
+            vector1 = Integer.parseInt(arr[1]);
+            vector2 = Integer.parseInt(arr[2]);
+            vector3 += 1;
+            System.out.println("[SERVER 3] vector time after receiving the message<" + vector0 + "," + vector1 + ","
+                    + vector2 + "," + vector3 + ">");
+        }
     }
 }
